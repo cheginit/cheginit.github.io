@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Function progress with Rich &#8212; Taher Chegini</title>
+    <title>General function for running functions asynchronously &#8212; Taher Chegini</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -51,8 +51,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Polygon legend in GeoPandas Plot" href="geopandas_polt.html" />
-    <link rel="prev" title="Adding breakpoints for debugging" href="debugging.html" />
+    <link rel="next" title="Timing a Function" href="timer.html" />
+    <link rel="prev" title="A round-robin scheduler implementation" href="rr.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -166,8 +166,8 @@
      Adding breakpoints for debugging
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="decorator.html">
      Function progress with Rich
     </a>
    </li>
@@ -216,8 +216,8 @@
      A round-robin scheduler implementation
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="run_async_func.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      General function for running functions asynchronously
     </a>
    </li>
@@ -285,7 +285,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/til/python/decorator.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/til/python/run_async_func.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -305,7 +305,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/cheginit/personal_website/issues/new?title=Issue%20on%20page%20%2Ftil/python/decorator.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/cheginit/personal_website/issues/new?title=Issue%20on%20page%20%2Ftil/python/run_async_func.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -334,48 +334,31 @@
         
               <div>
                 
-  <div class="section" id="function-progress-with-rich">
-<h1>Function progress with Rich<a class="headerlink" href="#function-progress-with-rich" title="Permalink to this headline">¶</a></h1>
-<p>We can use <code class="docutils literal notranslate"><span class="pre">rich</span></code> and <code class="docutils literal notranslate"><span class="pre">timeit</span></code> to create a visually appealing decorator for
-tracking a function’s progress:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rich.live</span> <span class="kn">import</span> <span class="n">Live</span>
+  <div class="section" id="general-function-for-running-functions-asynchronously">
+<h1>General function for running functions asynchronously<a class="headerlink" href="#general-function-for-running-functions-asynchronously" title="Permalink to this headline">¶</a></h1>
+<p>We use the this following snippet for running any function
+asynchronously:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">nest_asyncio</span>
 <span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">from</span> <span class="nn">timeit</span> <span class="kn">import</span> <span class="n">default_timer</span> <span class="k">as</span> <span class="n">timer</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">contextvars</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypeVar</span>
 
-<span class="k">def</span> <span class="nf">live_display</span><span class="p">(</span><span class="n">console</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">decorator_live_display</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">wrapper_decorator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">console</span><span class="o">=</span><span class="n">console</span><span class="p">,</span> <span class="n">screen</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">auto_refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
-                <span class="n">live</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">start</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="n">end</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
-                <span class="n">elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
-                <span class="n">live</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> [:heavy_check_mark:] (</span><span class="si">{</span><span class="n">elapsed</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-                    <span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="k">return</span> <span class="n">value</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">wrapper_decorator</span>
-
-    <span class="k">return</span> <span class="n">decorator_live_display</span>
-</pre></div>
-</div>
-<p>Then we can decorate a function like so:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-
-<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
-
-<span class="nd">@live_display</span><span class="p">(</span><span class="n">console</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Doing a fancy job!&quot;</span><span class="p">)</span>
-<span class="n">sleeping_beauty</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-    <span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">t</span>
-
-<span class="n">_</span> <span class="o">=</span> <span class="n">sleeping_beauty</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">run_in_threadpool</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Mock Sync function for Async call.Any</span>
+<span class="sd">    Code from https://github.com/encode/starlette/blob/master/starlette/concurrency.py</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop_policy</span><span class="p">()</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+    <span class="n">nest_asyncio</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="c1"># Ensure we run in the same context</span>
+    <span class="n">child</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">contextvars</span><span class="o">.</span><span class="n">copy_context</span><span class="p">()</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">run</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">child</span><span class="p">,)</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -405,8 +388,8 @@ tracking a function’s progress:</p>
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="debugging.html" title="previous page">Adding breakpoints for debugging</a>
-    <a class='right-next' id="next-link" href="geopandas_polt.html" title="next page">Polygon legend in GeoPandas Plot</a>
+    <a class='left-prev' id="prev-link" href="rr.html" title="previous page">A round-robin scheduler implementation</a>
+    <a class='right-next' id="next-link" href="timer.html" title="next page">Timing a Function</a>
 
         </div>
         

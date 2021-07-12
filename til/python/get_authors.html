@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Function progress with Rich &#8212; Taher Chegini</title>
+    <title>List of authors from DOI &#8212; Taher Chegini</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -51,8 +51,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Polygon legend in GeoPandas Plot" href="geopandas_polt.html" />
-    <link rel="prev" title="Adding breakpoints for debugging" href="debugging.html" />
+    <link rel="next" title="Extract links from a web page" href="html_file.html" />
+    <link rel="prev" title="Polygon legend in GeoPandas Plot" href="geopandas_polt.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -166,8 +166,8 @@
      Adding breakpoints for debugging
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="decorator.html">
      Function progress with Rich
     </a>
    </li>
@@ -176,8 +176,8 @@
      Polygon legend in GeoPandas Plot
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="get_authors.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      List of authors from DOI
     </a>
    </li>
@@ -285,7 +285,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/til/python/decorator.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/til/python/get_authors.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -305,7 +305,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/cheginit/personal_website/issues/new?title=Issue%20on%20page%20%2Ftil/python/decorator.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/cheginit/personal_website/issues/new?title=Issue%20on%20page%20%2Ftil/python/get_authors.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -334,50 +334,42 @@
         
               <div>
                 
-  <div class="section" id="function-progress-with-rich">
-<h1>Function progress with Rich<a class="headerlink" href="#function-progress-with-rich" title="Permalink to this headline">¶</a></h1>
-<p>We can use <code class="docutils literal notranslate"><span class="pre">rich</span></code> and <code class="docutils literal notranslate"><span class="pre">timeit</span></code> to create a visually appealing decorator for
-tracking a function’s progress:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rich.live</span> <span class="kn">import</span> <span class="n">Live</span>
-<span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">from</span> <span class="nn">timeit</span> <span class="kn">import</span> <span class="n">default_timer</span> <span class="k">as</span> <span class="n">timer</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
+  <div class="section" id="list-of-authors-from-doi">
+<h1>List of authors from DOI<a class="headerlink" href="#list-of-authors-from-doi" title="Permalink to this headline">¶</a></h1>
+<p>We can get a list of authors and their affiliations for any paper that is
+published in an <a class="reference external" href="https://agupubs.onlinelibrary.wiley.com/">AGU journal</a>
+using the following code snippet. First, you need
+to install <code class="docutils literal notranslate"><span class="pre">lxml</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, and <code class="docutils literal notranslate"><span class="pre">async_retriever</span></code> libraries.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">html</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">async_retriever</span> <span class="k">as</span> <span class="nn">ar</span>
 
-<span class="k">def</span> <span class="nf">live_display</span><span class="p">(</span><span class="n">console</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">decorator_live_display</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">wrapper_decorator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="k">with</span> <span class="n">Live</span><span class="p">(</span><span class="n">console</span><span class="o">=</span><span class="n">console</span><span class="p">,</span> <span class="n">screen</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">auto_refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">live</span><span class="p">:</span>
-                <span class="n">live</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">start</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="n">end</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
-                <span class="n">elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
-                <span class="n">live</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> [:heavy_check_mark:] (</span><span class="si">{</span><span class="n">elapsed</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-                    <span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="k">return</span> <span class="n">value</span>
+<span class="n">dois</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;10.1029/2018MS001603&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;10.1029/2019MS001766&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;10.1029/2018MS001583&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;10.1029/2019MS001870&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">wrapper_decorator</span>
+<span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://agupubs.onlinelibrary.wiley.com/doi/full&quot;</span>
+<span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dois</span><span class="p">]</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">ar</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">decorator_live_display</span>
+<span class="k">def</span> <span class="nf">auth_xpath</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;//*[@id=&quot;a</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">_Ctrl&quot;]/span/text()&#39;</span>
+
+<span class="k">def</span> <span class="nf">affi_xpath</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;//*[@id=&quot;a</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&quot;]/p/text()&#39;</span>
+
+<span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dois</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">auth</span> <span class="o">=</span> <span class="p">[[</span><span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">auth_xpath</span><span class="p">(</span><span class="n">n</span><span class="p">)),</span> <span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">affi_xpath</span><span class="p">(</span><span class="n">n</span><span class="p">))]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">)]</span>
+    <span class="n">auth</span> <span class="o">=</span> <span class="p">[(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">==</span><span class="mi">1</span> <span class="k">else</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">a</span> <span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">auth</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">auth_aff</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+    <span class="n">auth_aff</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;authors_</span><span class="si">{</span><span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Then we can decorate a function like so:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-
-<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
-
-<span class="nd">@live_display</span><span class="p">(</span><span class="n">console</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Doing a fancy job!&quot;</span><span class="p">)</span>
-<span class="n">sleeping_beauty</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-    <span class="n">sleep</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">t</span>
-
-<span class="n">_</span> <span class="o">=</span> <span class="n">sleeping_beauty</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>This snippet saves a list of authors and their affiliations to a <code class="docutils literal notranslate"><span class="pre">csv</span></code> file.</p>
 </div>
 
     <script type="text/x-thebe-config">
@@ -405,8 +397,8 @@ tracking a function’s progress:</p>
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="debugging.html" title="previous page">Adding breakpoints for debugging</a>
-    <a class='right-next' id="next-link" href="geopandas_polt.html" title="next page">Polygon legend in GeoPandas Plot</a>
+    <a class='left-prev' id="prev-link" href="geopandas_polt.html" title="previous page">Polygon legend in GeoPandas Plot</a>
+    <a class='right-next' id="next-link" href="html_file.html" title="next page">Extract links from a web page</a>
 
         </div>
         
