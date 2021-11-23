@@ -246,11 +246,6 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../python/parallel.html">
-       Parallel with Dask and Joblib
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../python/rr.html">
        A round-robin scheduler implementation
       </a>
@@ -377,7 +372,7 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="run-jupyter-lab-as-an-application">
 <h1>Run Jupyter Lab as an Application<a class="headerlink" href="#run-jupyter-lab-as-an-application" title="Permalink to this headline">¶</a></h1>
-<p>You can run Jupyter Lab as an application using application mode of Chrome as follows:</p>
+<p>You can run Jupyter Lab as an applicaton using application mode of Chrome as follows:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>jupyter lab --no-browser /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span> <span class="se">\</span>
 sleep <span class="m">2</span> <span class="o">&amp;&amp;</span> <span class="se">\</span>
 google-chrome --app<span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>jupyter lab list <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tail -1 <span class="p">|</span> awk -F <span class="s1">&#39;::&#39;</span> <span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
