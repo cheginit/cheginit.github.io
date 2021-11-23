@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Run Jupyter Lab as an Application &#8212; Taher Chegini</title>
+    <title>Jupyter &#8212; Taher Chegini</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -146,7 +146,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/til/jupyter/app.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/til/jupyter/README.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -166,7 +166,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/cheginit/personal_website/issues/new?title=Issue%20on%20page%20%2Ftil/jupyter/app.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/cheginit/personal_website/issues/new?title=Issue%20on%20page%20%2Ftil/jupyter/README.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -195,20 +195,14 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="run-jupyter-lab-as-an-application">
-<h1>Run Jupyter Lab as an Application<a class="headerlink" href="#run-jupyter-lab-as-an-application" title="Permalink to this headline">¶</a></h1>
-<p>You can run Jupyter Lab as an application using application mode of Chrome as follows:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>jupyter lab --no-browser /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span> <span class="se">\</span>
-sleep <span class="m">2</span> <span class="o">&amp;&amp;</span> <span class="se">\</span>
-google-chrome --app<span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>jupyter lab list <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tail -1 <span class="p">|</span> awk -F <span class="s1">&#39;::&#39;</span> <span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
-</pre></div>
+  <div class="section" id="jupyter">
+<h1>Jupyter<a class="headerlink" href="#jupyter" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://cheginit.github.io/til/jupyter/remote.html">Connect to a remote JupyterLab server</a> - 2021-02-20</p></li>
+<li><p><a class="reference external" href="https://cheginit.github.io/til/jupyter/app.html">Run Jupyter Lab as an Application</a> - 2021-04-02</p></li>
+</ul>
+<div class="toctree-wrapper compound">
 </div>
-<p>Alternatively, you can add the following line to your Jupyter Lab config file
-e.g., <code class="docutils literal notranslate"><span class="pre">~/.jupyter/jupyter_lab_config.py</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>c.LabApp.browser <span class="o">=</span> <span class="s1">&#39;google-chrome --app=%s&#39;</span>
-</pre></div>
-</div>
-<p>Credits to <a class="reference external" href="http://christopherroach.com/articles/jupyterlab-desktop-app/">Christopher Roach</a>.</p>
 </div>
 
     <script type="text/x-thebe-config">
