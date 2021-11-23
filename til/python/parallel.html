@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Split a URL &#8212; Taher Chegini</title>
+    <title>Parallel with Dask and Joblib &#8212; Taher Chegini</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -51,8 +51,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Extract links from a web page" href="html_file.html" />
-    <link rel="prev" title="List of authors from DOI" href="get_authors.html" />
+    <link rel="next" title="A round-robin scheduler implementation" href="rr.html" />
+    <link rel="prev" title="Check if None" href="none.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -205,8 +205,8 @@
        List of authors from DOI
       </a>
      </li>
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
+     <li class="toctree-l3">
+      <a class="reference internal" href="get_payload.html">
        Split a URL
       </a>
      </li>
@@ -245,8 +245,8 @@
        </code>
       </a>
      </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="parallel.html">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
        Parallel with Dask and Joblib
       </a>
      </li>
@@ -326,7 +326,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/til/python/get_payload.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/til/python/parallel.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -346,7 +346,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/cheginit/personal_website/issues/new?title=Issue%20on%20page%20%2Ftil/python/get_payload.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/cheginit/personal_website/issues/new?title=Issue%20on%20page%20%2Ftil/python/parallel.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -375,22 +375,53 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="split-a-url">
-<h1>Split a URL<a class="headerlink" href="#split-a-url" title="Permalink to this headline">¶</a></h1>
-<p>In some cases, we want to separate base URL and payload from
-a URL request, we can achieve this via Python’s built-in functions:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">urllib.parse</span> <span class="k">as</span> <span class="nn">parse</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
+  <div class="tex2jax_ignore mathjax_ignore section" id="parallel-with-dask-and-joblib">
+<h1>Parallel with Dask and Joblib<a class="headerlink" href="#parallel-with-dask-and-joblib" title="Permalink to this headline">¶</a></h1>
+<p>We can run a function parallel using <code class="docutils literal notranslate"><span class="pre">dask</span></code>, <code class="docutils literal notranslate"><span class="pre">joblib</span></code>, <code class="docutils literal notranslate"><span class="pre">cytoolz</span></code> as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span>
+<span class="kn">import</span> <span class="nn">joblib</span>
+<span class="kn">import</span> <span class="nn">cytoolz</span> <span class="k">as</span> <span class="nn">tlz</span>
 
-<span class="k">def</span> <span class="nf">extract_paylod</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
-    <span class="n">_url</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">parse</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">LocalCluster</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">threads_per_worker</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">cluster</span><span class="p">)</span>
 
-    <span class="n">payload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_url</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">))</span>
-    <span class="n">base_url</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">urlunsplit</span><span class="p">(</span><span class="n">_url</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">payload</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">do_somthing_with_args</span>
 
+<span class="n">per_proc</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">args_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">args1</span><span class="p">,</span> <span class="n">args2</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+<span class="k">with</span> <span class="n">joblib</span><span class="o">.</span><span class="n">parallel_backend</span><span class="p">(</span><span class="s2">&quot;dask&quot;</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span>
+        <span class="n">joblib</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">tlz</span><span class="o">.</span><span class="n">partition_all</span><span class="p">(</span><span class="n">per_proc</span><span class="p">,</span> <span class="n">args_list</span><span class="p">)</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
+<p>where <code class="docutils literal notranslate"><span class="pre">per_proc</span></code> is the number of arguments per process. Therefore, in this example,
+each process runs <code class="docutils literal notranslate"><span class="pre">func([args1,</span> <span class="pre">args2,</span> <span class="pre">args3,</span> <span class="pre">args4,</span> <span class="pre">args5])</span></code>. Alternatively, you can
+use <code class="docutils literal notranslate"><span class="pre">*</span></code> to expand the list like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">arg3</span><span class="p">,</span> <span class="n">arg4</span><span class="p">,</span> <span class="n">arg5</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">do_somthing_with_args</span>
+
+<span class="k">with</span> <span class="n">joblib</span><span class="o">.</span><span class="n">parallel_backend</span><span class="p">(</span><span class="s2">&quot;dask&quot;</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span>
+        <span class="n">joblib</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">tlz</span><span class="o">.</span><span class="n">partition_all</span><span class="p">(</span><span class="n">per_proc</span><span class="p">,</span> <span class="n">args_list</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Also, we could have directly used <code class="docutils literal notranslate"><span class="pre">Client()</span></code> with <code class="docutils literal notranslate"><span class="pre">joblib</span></code> like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Client</span><span class="p">(),</span> <span class="n">joblib</span><span class="o">.</span><span class="n">parallel_backend</span><span class="p">(</span><span class="s2">&quot;dask&quot;</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">Parallel</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span>
+        <span class="n">joblib</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">args</span> <span class="ow">in</span> <span class="n">tlz</span><span class="o">.</span><span class="n">partition_all</span><span class="p">(</span><span class="n">per_proc</span><span class="p">,</span> <span class="n">args_list</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>The difference is that the latter approach spwans a new schedueler every time
+the code reaches the line while the former creates only one schedueler. This
+is useful for cases where you want to use this approach several times in a code.</p>
 </div>
 
     <script type="text/x-thebe-config">
@@ -418,17 +449,17 @@ a URL request, we can achieve this via Python’s built-in functions:</p>
         
             <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="get_authors.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="none.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">List of authors from DOI</p>
+            <p class="prev-next-title">Check if <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="html_file.html" title="next page">
+    <a class='right-next' id="next-link" href="rr.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Extract links from a web page</p>
+        <p class="prev-next-title">A round-robin scheduler implementation</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
