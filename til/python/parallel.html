@@ -411,7 +411,7 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="parallel-with-dask-and-joblib">
 <h1>Parallel with Dask and Joblib<a class="headerlink" href="#parallel-with-dask-and-joblib" title="Permalink to this headline">¶</a></h1>
-<p>We can run a function parallel using <code class="docutils literal notranslate"><span class="pre">dask</span></code>, <code class="docutils literal notranslate"><span class="pre">joblib</span></code>, <code class="docutils literal notranslate"><span class="pre">cytoolz</span></code> as follows:</p>
+<p>We can run a function parallel using <code class="docutils literal notranslate"><span class="pre">dask</span></code>, <code class="docutils literal notranslate"><span class="pre">joblib</span></code>, and <code class="docutils literal notranslate"><span class="pre">cytoolz</span></code> as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span>
 <span class="kn">import</span> <span class="nn">joblib</span>
 <span class="kn">import</span> <span class="nn">cytoolz</span> <span class="k">as</span> <span class="nn">tlz</span>
@@ -454,8 +454,8 @@ use <code class="docutils literal notranslate"><span class="pre">*</span></code>
 </pre></div>
 </div>
 <p>The difference is that the latter approach spwans a new schedueler every time
-the code reaches the line while the former creates only one schedueler. This
-is useful for cases where you want to use this approach several times in a code.</p>
+the code reaches this line of code whereas the former creates only one schedueler. The
+former approach is useful for cases where you have several such parallel runs in your code.</p>
 </div>
 
     <script type="text/x-thebe-config">
