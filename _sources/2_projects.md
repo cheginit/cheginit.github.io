@@ -1,7 +1,15 @@
-Software
-========
+# Projects
 
-[HyRiver](https://hyriver.readthedocs.io) Software Stack
+## Workshops
+
+- Geospatial Water Technology Conference 2022: [Geospatial R and Python Workshop](https://github.com/cheginit/AWRA2022GeoWorkshop)
+- University of Houston: [CFD Code Development Frameworks](https://github.com/cheginit/UHWorkshop)
+
+## Models and Data
+
+- [Coastal Transition Zone](https://github.com/cheginit/coastal_transition_zone)
+
+## Software
 
 ```{list-table}
 :header-rows: 1
