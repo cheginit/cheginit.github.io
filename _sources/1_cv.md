@@ -10,8 +10,8 @@
 
 ## Technical Skills
 
-- **Programming**: Python$^\text{P}$, Fortran$^\text{P}$, High Performance Computing$^\text{P}$, Make and CMake$^\text{E}$, Git$^\text{P}$, Shell Scripting$^\text{P}$, Continuous Integration and Delivery$^\text{P}$
-- **Software**: E3SM$^\text{E}$, WRF-Hydro$^\text{E}$, HEC--HMS$^\text{E}$, OpenFOAM$^\text{E}$, Paraview$^\text{P}$, \LaTeX$^\text{P}$%, SWAT$^\text{E}$, Blender$^\text{E}$, SALOME$^\text{E}$, AutoCAD$^\text{E}$, GIMP$^\text{E}$, Lightworks$^\text{E}$
+- **Programming**: Python$^\text{P}$, Fortran$^\text{P}$, High Performance Computing$^\text{P}$, (C)Make$^\text{E}$, Git$^\text{P}$, Shell Scripting$^\text{P}$, Continuous Integration and Delivery$^\text{P}$
+- **Software**: E3SM$^\text{E}$, WRF-Hydro$^\text{E}$, HEC-HMS$^\text{E}$, OpenFOAM$^\text{E}$, Paraview$^\text{P}$, LaTeX$^\text{E}$, SWAT$^\text{E}$, Blender$^\text{E}$
 
 $^\text{P}$: *Proficient*, $^\text{E}$: *Experienced*
 
@@ -40,10 +40,10 @@ $^\text{P}$: *Proficient*, $^\text{E}$: *Experienced*
 
 ## Awards
 
-- Summer 2022: 2021 **ASCE Outstanding Reviewer** for the *Journal of Hydrologic Engineering*
+- Summer 2022: **2021 ASCE Outstanding Reviewer** for the *Journal of Hydrologic Engineering*
 - Spring 2021: **Graduate Visiting Program**, *National Center for Atmospheric Research*, Boulder, Colorado
 - Summer 2019: **Summer Institute 2019**, *National Water Center*, Tuscaloosa, Alabama
-- Summer 2019: **Workshop: WRF-Hydro**, *National Center for Atmospheric Research (NCAR)*, Boulder, Colorado
+- Summer 2019: **Workshop: Introduction to WRF-Hydro**, *National Center for Atmospheric Research (NCAR)*, Boulder, Colorado
 - Summer 2019: **Workshop: Critical Timescales of Hydrologic Transport**, *Berkeley Institute for Data Science*, Berkeley, California
 - Summer 2018: **Best Graduate Paper Student**, *World Environmental & Water Resources (EWRI) Congress 2018*, Minneapolis, Minnesota
 - 2017--2018: **CACDS Fellowship**, *Center for Advanced Computing and Data Science*, University of Houston, TX
