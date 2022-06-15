@@ -10,16 +10,15 @@
 
 ## Technical Skills
 
-- **Programming**: Python (P[^P]), Fortran (P), High Performance Computing (P), Make and CMake (E[^E]), Git (P), Shell Scripting (P), Continuous Integration and Delivery (P)
-- **Software**: E3SM (E), WRF-Hydro (E), HEC--HMS (E), OpenFOAM (E), Paraview (P), \LaTeX (P)%, SWAT (E), Blender (E), SALOME (E), AutoCAD (E), GIMP (E), Lightworks (E)
+- **Programming**: Python$^\text{P}$, Fortran$^\text{P}$, High Performance Computing$^\text{P}$, Make and CMake$^\text{E}$, Git$^\text{P}$, Shell Scripting$^\text{P}$, Continuous Integration and Delivery$^\text{P}$
+- **Software**: E3SM$^\text{E}$, WRF-Hydro$^\text{E}$, HEC--HMS$^\text{E}$, OpenFOAM$^\text{E}$, Paraview$^\text{P}$, \LaTeX$^\text{P}$%, SWAT$^\text{E}$, Blender$^\text{E}$, SALOME$^\text{E}$, AutoCAD$^\text{E}$, GIMP$^\text{E}$, Lightworks$^\text{E}$
 
-[^P]: Proficient
-[^E]: Experienced
+$^\text{P}$: *Proficient*, $^\text{E}$: *Experienced*
 
-## Academic Experience
+## Academic Experiences
 
 - 2017-Present: **Research Assistant**, University of Houston, Houston, TX
-  - Developed [HyRiver](https://hyriver.readthedocs.io): An open-source Python software stack, for accessing hydroclimate data through web services with over 170K installations
+  - Developed [HyRiver](https://hyriver.readthedocs.io): An open-source Python software stack, for accessing hydroclimate data through web services with over 230K installations
   - Initiated and taught three two-day workshops, titled [CFD through OpenFOAM](https://github.com/cheginit/UHWorkshop) at the Center for Advanced Computing and Data Science with 52 participants including faculties and students
   - Mentored two undergraduate students regarding research and career opportunities in the field of hydrology
 
@@ -41,12 +40,12 @@
 
 ## Awards
 
-- Summer 2022: 2021 **ASCE Outstanding Reviewer** for the Journal of Hydrologic Engineering
-- Spring 2021: **Graduate Visiting Program**, National Center for Atmospheric Research, Boulder, Colorado
-- Summer 2019: **Summer Institute 2019**, National Water Center, Tuscaloosa, Alabama
-- Summer 2019: **Workshop: WRF-Hydro**, National Center for Atmospheric Research (NCAR), Boulder, Colorado
-- Summer 2019: **Workshop: Critical Timescales of Hydrologic Transport**, Berkeley Institute for Data Science, Berkeley, California
-- Summer 2018: **Best Graduate Paper Student**, World Environmental \& Water Resources (EWRI) Congress 2018, Minneapolis, Minnesota
-- 2017--2018: **CACDS Fellowship**, Advanced Computing, and Data Science, University of Houston, TX
-- Summer 2017: **Workshop: Applied CFD with OpenFOAM**, CFD-direct: The Architects of OpenFOAM, Houston, Texas
-- Summer 2015: **Summer School: Water and Human Health in Urban Systems**, University of Duisburg-Essen, Essen, Germany
+- Summer 2022: 2021 **ASCE Outstanding Reviewer** for the *Journal of Hydrologic Engineering*
+- Spring 2021: **Graduate Visiting Program**, *National Center for Atmospheric Research*, Boulder, Colorado
+- Summer 2019: **Summer Institute 2019**, *National Water Center*, Tuscaloosa, Alabama
+- Summer 2019: **Workshop: WRF-Hydro**, *National Center for Atmospheric Research (NCAR)*, Boulder, Colorado
+- Summer 2019: **Workshop: Critical Timescales of Hydrologic Transport**, *Berkeley Institute for Data Science*, Berkeley, California
+- Summer 2018: **Best Graduate Paper Student**, *World Environmental & Water Resources (EWRI) Congress 2018*, Minneapolis, Minnesota
+- 2017--2018: **CACDS Fellowship**, *Center for Advanced Computing and Data Science*, University of Houston, TX
+- Summer 2017: **Workshop: Applied CFD with OpenFOAM**, *CFD-direct: The Architects of OpenFOAM*, Houston, Texas
+- Summer 2015: **Summer School: Water and Human Health in Urban Systems**, *University of Duisburg-Essen*, Essen, Germany
