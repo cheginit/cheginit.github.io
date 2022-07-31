@@ -40,7 +40,8 @@ $^\text{P}$: *Proficient*, $^\text{E}$: *Experienced*
 
 ## Awards
 
-- Summer 2022: **2021 ASCE Outstanding Reviewer** for the *Journal of Hydrologic Engineering*
+- Summer 2022: **Subject Matter Expert** for *NASA's [Transform to Open Science (TOPS)](https://github.com/nasa/Transform-to-Open-Science)*
+- Spring 2022: **2021 ASCE Outstanding Reviewer** for the *Journal of Hydrologic Engineering*
 - Spring 2021: **Graduate Visiting Program**, *National Center for Atmospheric Research*, Boulder, Colorado
 - Summer 2019: **Summer Institute 2019**, *National Water Center*, Tuscaloosa, Alabama
 - Summer 2019: **Workshop: Introduction to WRF-Hydro**, *National Center for Atmospheric Research (NCAR)*, Boulder, Colorado

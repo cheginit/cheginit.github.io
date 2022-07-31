@@ -9,6 +9,53 @@
 
 - [Coastal Transition Zone](https://github.com/cheginit/coastal_transition_zone)
 
+## Invited Talks
+
+```{eval-rst}
+.. grid:: 1 2 2 2
+    :gutter: 2
+
+    
+    .. grid-item-card:: Pangeo Showcase
+        :text-align: center
+
+        .. raw:: html
+
+            <iframe width="100%" src="https://www.youtube.com/embed/eRDgyq0u4Y8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        +++
+        Taher Chegini
+
+
+    .. grid-item-card:: ESIP IT&I
+        :text-align: center
+
+        .. raw:: html
+
+            <iframe width="100%" src="https://www.youtube.com/embed/Wz8Y5G9oy-M?start=1838s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        +++
+        Taher Chegini
+
+
+    .. grid-item-card:: WaterHackWeek 2020
+        :text-align: center
+
+        .. raw:: html
+
+            <iframe width="100%" src="https://www.youtube.com/embed/VRQ_Tk49s5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        +++
+        Taher Chegini
+
+
+    .. grid-item-card:: UH Seminar
+        :text-align: center
+
+        .. raw:: html
+
+            <iframe width="100%" src="https://www.youtube.com/embed/RSyFv9AfUb8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        +++
+        Taher Chegini
+```
+
 ## Software
 
 ```{list-table}
