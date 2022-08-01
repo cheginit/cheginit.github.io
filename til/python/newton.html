@@ -565,30 +565,32 @@ We find the root of <span class="math notranslate nohighlight">\(f(\theta) = \th
 </div>
 <p>The root of this function for <span class="math notranslate nohighlight">\(A=0.91\)</span> and <span class="math notranslate nohighlight">\(r=2\)</span> is approximately 1.45. We intentionally
 give a far off initial guess for a better comparison.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>%timeit halley_solver(10000, (0.91, 2))
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">%</span>timeit halley_solver<span class="o">(</span><span class="m">10000</span>, <span class="o">(</span><span class="m">0</span>.91, <span class="m">2</span><span class="o">))</span>
 
-1.44 µs ± 1.45 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
+<span class="go">1.44 µs ± 1.45 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)</span>
 </pre></div>
 </div>
 <p>Now, let’s use <code class="docutils literal notranslate"><span class="pre">optimize.newton</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>from scipy import optimize
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">optimize</span>
 
-def der1(theta: float, _) -&gt; float:
-    &quot;&quot;&quot;The first derivative of the main function.&quot;&quot;&quot;
-    return 1.0 - np.cos(theta)
+<span class="k">def</span> <span class="nf">der1</span><span class="p">(</span><span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The first derivative of the main function.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
 
-def der2(theta: float, _) -&gt; float:
-    &quot;&quot;&quot;The second derivative of the main function.&quot;&quot;&quot;
-    return np.sin(theta)
-
-%timeit optimize.newton(func_main, 10000, fprime=der1, args=((0.91, 2),), fprime2=der2)
-
-1.12 ms ± 43.4 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+<span class="k">def</span> <span class="nf">der2</span><span class="p">(</span><span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The second derivative of the main function.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The Numba version has almost x1000 performance improvement. Although, writing a general
-version with Numba is not very straight forward, but the code can be easily adjusted
-for any equation.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">%</span>timeit optimize.newton<span class="o">(</span>func_main, <span class="m">10000</span>, <span class="nv">fprime</span><span class="o">=</span>der1, <span class="nv">fprime2</span><span class="o">=</span>der2, <span class="nv">args</span><span class="o">=((</span><span class="m">0</span>.91, <span class="m">2</span><span class="o">)</span>,<span class="o">))</span>
+
+<span class="go">1.12 ms ± 43.4 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)</span>
+</pre></div>
+</div>
+<p>The Numba version has almost x1000 performance improvement. I should note that the reason
+that I didn’t pass the functions as an argument to <code class="docutils literal notranslate"><span class="pre">halley_solver</span></code> function is that you
+cannot specify the Numba signatures explicitly. Technically you can choose to not pass
+the signatures to <code class="docutils literal notranslate"><span class="pre">ngjit</span></code>, but for getting the maximum performance I decided to pass them.</p>
 </section>
 
     <script type="text/x-thebe-config">
