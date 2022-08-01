@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Split a URL &#8212; Taher Chegini</title>
+    <title>Implementing Newton-Raphson algorithm with Numba &#8212; Taher Chegini</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -50,10 +50,12 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Extract links from a web page" href="html_file.html" />
-    <link rel="prev" title="List of authors from DOI" href="get_authors.html" />
+    <link rel="next" title="Networkx graph from NHDPlus" href="nhdplus.html" />
+    <link rel="prev" title="Install and setup miniforge" href="miniforge.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -249,8 +251,8 @@ const thebe_selector_output = ".output, .cell_output"
        List of authors from DOI
       </a>
      </li>
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
+     <li class="toctree-l3">
+      <a class="reference internal" href="get_payload.html">
        Split a URL
       </a>
      </li>
@@ -274,8 +276,8 @@ const thebe_selector_output = ".output, .cell_output"
        </code>
       </a>
      </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="newton.html">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
        Implementing Newton-Raphson algorithm with Numba
       </a>
      </li>
@@ -432,7 +434,7 @@ title="Source repository"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../../_sources/til/python/get_payload.md"
+        <a href="../../_sources/til/python/newton.md"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -481,7 +483,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Split a URL</h1>
+                <h1>Implementing Newton-Raphson algorithm with Numba</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -493,22 +495,100 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="split-a-url">
-<h1>Split a URL<a class="headerlink" href="#split-a-url" title="Permalink to this headline">#</a></h1>
-<p>In some cases, we want to separate base URL and payload from
-a URL request, we can achieve this via Python’s built-in functions:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">urllib.parse</span> <span class="k">as</span> <span class="nn">parse</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
+  <section class="tex2jax_ignore mathjax_ignore" id="implementing-newton-raphson-algorithm-with-numba">
+<h1>Implementing Newton-Raphson algorithm with Numba<a class="headerlink" href="#implementing-newton-raphson-algorithm-with-numba" title="Permalink to this headline">#</a></h1>
+<p>SciPy has a function called <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.newton.html"><code class="docutils literal notranslate"><span class="pre">optimize.newton</span></code></a>
+that is an implementation of the Newton-Raphson root finding algorithm. If we pass
+both <code class="docutils literal notranslate"><span class="pre">fprime</span></code> and <code class="docutils literal notranslate"><span class="pre">fprime2</span></code> arguments (first and second derivatives) it uses
+Halley’s method. Here we implement a more efficient but less general version of this
+code using <a class="reference external" href="https://numba.pydata.org/">Numba</a> and compare its performance with SciPy.
+We find the root of <span class="math notranslate nohighlight">\(f(\theta) = \theta - \sin (\theta) - 2 A / r^2\)</span>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
 
-<span class="k">def</span> <span class="nf">extract_paylod</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span><span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
-    <span class="n">_url</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">parse</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
 
-    <span class="n">payload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">_url</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">))</span>
-    <span class="n">base_url</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">urlunsplit</span><span class="p">(</span><span class="n">_url</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">payload</span>
+<span class="n">ngjit</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">njit</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
+<span class="nd">@ngjit</span><span class="p">(</span><span class="s2">&quot;b1(f8, f8, f8, f8)&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">within_tol</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check if two float numbers are within a tolerance.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">atol</span> <span class="o">+</span> <span class="n">rtol</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+
+<span class="nd">@ngjit</span><span class="p">(</span><span class="s2">&quot;f8(f8, UniTuple(f8, 2))&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">func_main</span><span class="p">(</span><span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The main function to find the root of.&quot;&quot;&quot;</span>
+    <span class="n">area</span><span class="p">,</span> <span class="n">rad</span> <span class="o">=</span> <span class="n">args</span>
+    <span class="k">return</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">area</span> <span class="o">/</span> <span class="n">rad</span> <span class="o">**</span> <span class="mi">2</span>
+
+
+<span class="nd">@ngjit</span><span class="p">(</span><span class="s2">&quot;f8(f8)&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">func_der1</span><span class="p">(</span><span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The first derivative of the main function.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+
+<span class="nd">@ngjit</span><span class="p">(</span><span class="s2">&quot;f8(f8)&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">func_der2</span><span class="p">(</span><span class="n">theta</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The second derivative of the main function.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+
+<span class="nd">@ngjit</span><span class="p">(</span><span class="s2">&quot;f8(f8, UniTuple(f8, 2))&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">halley_solver</span><span class="p">(</span><span class="n">x0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Find root of ``func_main`` using Halley&#39;s method.&quot;&quot;&quot;</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1.48e-8</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+        <span class="n">fval</span> <span class="o">=</span> <span class="n">func_main</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">within_tol</span><span class="p">(</span><span class="n">fval</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">p0</span>
+
+        <span class="n">fder</span> <span class="o">=</span> <span class="n">func_der1</span><span class="p">(</span><span class="n">p0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">within_tol</span><span class="p">(</span><span class="n">fder</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="n">newton_step</span> <span class="o">=</span> <span class="n">fval</span> <span class="o">/</span> <span class="n">fder</span>
+
+        <span class="c1"># Since second derivative is available we can modify</span>
+        <span class="c1"># the Newton-Raphson step based on Halley&#39;s method.</span>
+        <span class="n">fder2</span> <span class="o">=</span> <span class="n">func_der2</span><span class="p">(</span><span class="n">p0</span><span class="p">)</span>
+        <span class="n">adj</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">newton_step</span> <span class="o">*</span> <span class="n">fder2</span> <span class="o">/</span> <span class="n">fder</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">adj</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">newton_step</span> <span class="o">/=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">adj</span>
+
+        <span class="n">p0</span> <span class="o">-=</span> <span class="n">newton_step</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 </pre></div>
 </div>
+<p>The root of this function for <span class="math notranslate nohighlight">\(A=0.91\)</span> and <span class="math notranslate nohighlight">\(r=2\)</span> is approximately 1.45. We intentionally
+give a far off initial guess for a better comparison.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>%timeit halley_solver(10000, (0.91, 2))
+
+1.44 µs ± 1.45 ns per loop (mean ± std. dev. of 7 runs, 1,000,000 loops each)
+</pre></div>
+</div>
+<p>Now, let’s use <code class="docutils literal notranslate"><span class="pre">optimize.newton</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>from scipy import optimize
+
+def der1(theta: float, _) -&gt; float:
+    &quot;&quot;&quot;The first derivative of the main function.&quot;&quot;&quot;
+    return 1.0 - np.cos(theta)
+
+def der2(theta: float, _) -&gt; float:
+    &quot;&quot;&quot;The second derivative of the main function.&quot;&quot;&quot;
+    return np.sin(theta)
+
+%timeit optimize.newton(func_main, 10000, fprime=der1, args=((0.91, 2),), fprime2=der2)
+
+1.12 ms ± 43.4 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div>
+</div>
+<p>The Numba version has almost x1000 performance improvement. Although, writing a general
+version with Numba is not very straight forward, but the code can be easily adjusted
+for any equation.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -538,17 +618,17 @@ a URL request, we can achieve this via Python’s built-in functions:</p>
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="get_authors.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="miniforge.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">List of authors from DOI</p>
+            <p class="prev-next-title">Install and setup <code class="docutils literal notranslate"><span class="pre">miniforge</span></code></p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="html_file.html" title="next page">
+    <a class='right-next' id="next-link" href="nhdplus.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Extract links from a web page</p>
+        <p class="prev-next-title">Networkx graph from NHDPlus</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
