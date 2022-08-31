@@ -2,6 +2,7 @@
 
 ## Workshops
 
+- Internet of Waters Webinar 2022: [Working with Geospatial Hydrologic Data Using Web Services Part 2: Python](https://internetofwater.org/events/working-with-geospatial-hydrologic-data-using-web-services-python/)
 - Geospatial Water Technology Conference 2022: [Geospatial R and Python Workshop](https://github.com/cheginit/AWRA2022GeoWorkshop)
 - University of Houston: [CFD Code Development Frameworks](https://github.com/cheginit/UHWorkshop)
 
