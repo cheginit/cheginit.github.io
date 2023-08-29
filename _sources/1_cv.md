@@ -2,22 +2,25 @@
 
 ## Education
 
-- 2017-2022 (expected): **PhD in Civil and Environmental Engineering**, University of Houston, Houston, TX
+- 2023-present: **Postdoc**, Purdue University, West Lafayette, IN
+  - Research: *Large-scale synthetic river bathymetry and flood assessment framework*
+- 2017-2023: **PhD in Civil and Environmental Engineering**, University of Houston, Houston, TX
   - Thesis: *MOSART-Urban: A large-scale urban hydrological modeling framework*
-- 2006-2010: **MSc in Hydraulic Engineering**, Khajeh Nasir Toosi University of Technology, Tehran, Iran
-  - Thesis: *Numerical simulation of nonlinear water surface waves based on a Volum-of-Fluid technique*
-- 2002-2006: **BSc in Civil Engineering**, Razi University, Kermanshah, Iran
+- 2006-2010: **MSc in Hydraulic Engineering**, K.N. Toosi University of Technology, Tehran, Iran
+  - Thesis: *Numerical simulation of nonlinear water surface waves based on a Volume-of-Fluid technique*
 
 ## Technical Skills
 
 - **Programming**: Python$^\text{P}$, Fortran$^\text{P}$, High Performance Computing$^\text{P}$, (C)Make$^\text{E}$, Git$^\text{P}$, Shell Scripting$^\text{P}$, Continuous Integration and Delivery$^\text{P}$
-- **Software**: E3SM$^\text{E}$, WRF-Hydro$^\text{E}$, HEC-HMS$^\text{E}$, OpenFOAM$^\text{E}$, Paraview$^\text{P}$, LaTeX$^\text{E}$, SWAT$^\text{E}$, Blender$^\text{E}$
+- **Software**: E3SM$^\text{E}$, WRF-Hydro$^\text{E}$, HEC-HMS$^\text{E}$, OpenFOAM$^\text{E}$, Paraview$^\text{P}$, LaTeX$^\text{E}$, Blender$^\text{E}$
 
 $^\text{P}$: *Proficient*, $^\text{E}$: *Experienced*
 
 ## Academic Experiences
 
-- 2017-Present: **Research Assistant**, University of Houston, Houston, TX
+- 2023-present: **Postdoc**, Purdue University, West Lafayette, IN
+  - Research: *Large-scale synthetic river bathymetry and flood assessment framework*
+- 2017-2023: **Research Assistant**, University of Houston, Houston, TX
   - Developed [HyRiver](https://hyriver.readthedocs.io): An open-source Python software stack, for accessing hydroclimate data through web services with over 230K installations
   - Initiated and taught three two-day workshops, titled [CFD through OpenFOAM](https://github.com/cheginit/UHWorkshop) at the Center for Advanced Computing and Data Science with 52 participants including faculties and students
   - Mentored two undergraduate students regarding research and career opportunities in the field of hydrology
