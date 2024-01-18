@@ -46,17 +46,17 @@ jobs:
         git submodule update --init
         git submodule update --recursive --remote --merge
         jupyter-book toc from-project -s til . > _toc.yml
-        sed -i '' '$ d' _toc.yml
-        sed -i '' '/file: README/d' _toc.yml
+        sed -i '$ d' _toc.yml
+        sed -i '/file: README/d' _toc.yml
         echo "- file: til/README" >> _toc.yml
         echo "  entries:" >> _toc.yml
         for f in $(ls -d1 til/*/); do
           section="$(basename $f)"
           fname="_toc_${section}.yml"
           jupyter-book toc from-project -i README $f > "$fname"
-          sed -i '' 's/- file: /    - file: til\/'"$section"'\//g' "$fname"
-          sed -i '' 's/root: /  - file: til\/'"$section"'\//g' "$fname"
-          sed -i '' 's/entries:/    entries:/g' "$fname"
+          sed -i 's/- file: /    - file: til\/'"$section"'\//g' "$fname"
+          sed -i 's/root: /  - file: til\/'"$section"'\//g' "$fname"
+          sed -i 's/entries:/    entries:/g' "$fname"
           cat "$fname" >> _toc.yml
           rm "$fname"
         done
