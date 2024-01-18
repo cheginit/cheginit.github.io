@@ -1,0 +1,45 @@
+root: index
+entries:
+- file: 1_cv
+- file: 2_projects
+- file: 3_publications
+- file: til/README
+  entries:
+  - file: til/github_actions/README
+    entries:
+    - file: til/github_actions/mamba
+
+  - file: til/jupyter/README
+    entries:
+    - file: til/jupyter/app
+    - file: til/jupyter/remote
+    - file: til/jupyter/rich
+
+  - file: til/python/README
+    entries:
+    - file: til/python/agu_abstract
+    - file: til/python/autoapi
+    - file: til/python/barplot
+    - file: til/python/clipboard
+    - file: til/python/colorbar
+    - file: til/python/debugging
+    - file: til/python/decorator
+    - file: til/python/geopandas_polt
+    - file: til/python/get_authors
+    - file: til/python/get_payload
+    - file: til/python/html_file
+    - file: til/python/logging
+    - file: til/python/miniforge
+    - file: til/python/newton
+    - file: til/python/nhdplus
+    - file: til/python/none
+    - file: til/python/parallel
+    - file: til/python/rr
+    - file: til/python/run_async_func
+    - file: til/python/timer
+    - file: til/python/xlm_parse
+
+  - file: til/web_service/README
+    entries:
+    - file: til/web_service/netrc
+

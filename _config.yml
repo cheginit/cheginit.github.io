@@ -1,0 +1,14 @@
+title: Taher Chegini
+author: Taher Chegini
+copyright: "2023"
+logo: images/me.png
+
+execute:
+  execute_notebooks: off
+
+bibtex_bibfiles:
+  - references.bib
+
+repository:
+  url: https://github.com/cheginit/cheginit.github.io
+  branch: main

@@ -1,0 +1,82 @@
+name: Build and Update The Website
+
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup Pages
+      id: pages
+      uses: actions/configure-pages@v4
+
+    - name: Create a Python environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+
+    - name: Install Python dependencies
+      run: pip install jupyter-book
+
+    - name: Build the table of contents
+      run: |-
+        git submodule update --init
+        git submodule update --recursive --remote --merge
+        jupyter-book toc from-project -s til . > _toc.yml
+        sed -i '' '$ d' _toc.yml
+        sed -i '' '/file: README/d' _toc.yml
+        echo "- file: til/README" >> _toc.yml
+        echo "  entries:" >> _toc.yml
+        for f in $(ls -d1 til/*/); do
+          section="$(basename $f)"
+          fname="_toc_${section}.yml"
+          jupyter-book toc from-project -i README $f > "$fname"
+          sed -i '' 's/- file: /    - file: til\/'"$section"'\//g' "$fname"
+          sed -i '' 's/root: /  - file: til\/'"$section"'\//g' "$fname"
+          sed -i '' 's/entries:/    entries:/g' "$fname"
+          cat "$fname" >> _toc.yml
+          rm "$fname"
+        done
+
+    - name: Build the website
+      run: |-
+        jupyter-book build .
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./_build/html
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
